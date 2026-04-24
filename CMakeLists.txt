@@ -99,11 +99,11 @@ if (WIN32)
   set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /LTCG:incremental /OPT:REF /OPT:ICF")
 elseif (UNIX)
   # Turn on C++11
-  add_definitions(-std=c++11)
+  add_definitions(-std=c++17)
   set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 elseif (APPLE)
   # Turn on C++11
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
   set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 endif (WIN32)
 
@@ -505,7 +505,7 @@ if (UNIX OR APPLE)
 
   if (${GPU_MODE} MATCHES "CUDA")
     # Set CUDA Flags
-    set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -std=c++14") # Thrust library requires C++14 for CUDA >= 11
+    set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -std=c++17") # Thrust library requires C++14 for CUDA >= 11
     set(CUDA_NVCC_FLAGS_DEBUG "${CUDA_NVCC_FLAGS_DEBUG} -D_DEBUG -g")
 
     if (NOT CUDA_FOUND)
@@ -816,7 +816,13 @@ if (UNIX OR APPLE)
           -DBUILD_python_layer=OFF
           -DUSE_LEVELDB=OFF
           -DUSE_LMDB=OFF
-          -DUSE_OPENCV=OFF)
+          -DUSE_OPENCV=OFF
+          -DBLAS=Open
+          -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+          -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+          -DCUDA_TOOLKIT_ROOT_DIR=${CUDA_TOOLKIT_ROOT_DIR}
+          -DCMAKE_CXX_STANDARD=17 -DCMAKE_CUDA_STANDARD=17
+          -DCMAKE_CXX_STANDARD_REQUIRED=ON)
           # -DOpenCV_DIR=${OpenCV_DIR})
       endif (USE_MKL)
 
